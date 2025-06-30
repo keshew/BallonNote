@@ -13,6 +13,7 @@ struct BallonSketchView: View {
     
     @State private var showChooseScreen = false
     @State var sketchImage: Data? = nil
+    @State private var currentLine: Line = Line(points: [], color: .black, width: 2)
     
     init() {
         let appearance = UINavigationBarAppearance()
@@ -49,69 +50,27 @@ struct BallonSketchView: View {
                 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 16) {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 24) {
-                                ForEach(ballonSketchModel.colors) { sketchColor in
-                                    Circle()
-                                        .fill(sketchColor.color)
-                                        .frame(width: 36, height: 36)
-                                        .overlay(
-                                            Circle()
-                                                .stroke(Color.black.opacity(ballonSketchModel.selectedColor == sketchColor ? 0.7 : 0), lineWidth: 1)
-                                        )
-                                        .scaleEffect(ballonSketchModel.selectedColor == sketchColor ? 1.15 : 1.0)
-                                        .onTapGesture {
-                                            ballonSketchModel.selectedColor = sketchColor
-                                        }
-                                }
-                            }
-                            .padding(.horizontal)
-                            .padding(.vertical)
-                        }
-                        .padding(.top, 20)
-                        
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 24)
-                                .fill(Color(red: 247/255, green: 245/255, blue: 233/255))
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 24)
-                                        .stroke(Color.gray.opacity(0.3))
-                                }
-                                .frame(height: 472)
-                                .padding(.horizontal)
-                            
-                            CanvasView(
-                                lines: $ballonSketchModel.lines,
-                                selectedColor: ballonSketchModel.selectedColor.color,
-                                selectedWidth: ballonSketchModel.selectedBrush.width
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 24))
-                            .frame(height: 472)
-                            .padding(.horizontal)
-                        }
+                        colorPalette
+                        sketchCanvas
                         
                         HStack(spacing: 12) {
-                            ForEach(Array(ballonSketchModel.brushes.enumerated()), id: \.element.id) { index, brush in
-                                Image(brush.icon)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 48, height: 160)
-                                    .foregroundColor(.black)
-                                    .shadow(color: Color(red: 232/255, green: 226/255, blue: 44/255), radius:  ballonSketchModel.selectedBrush == brush ? 8 : 0)
-                                    .offset(y: CGFloat(index) * 20)
-                                    .onTapGesture {
-                                        ballonSketchModel.selectedBrush = brush
-                                            
-                                    }
-                                    .animation(.spring(), value: ballonSketchModel.selectedBrush)
-                            }
+                            BrushPicker(
+                                selectedBrush: $ballonSketchModel.selectedBrush,
+                                brushes: ballonSketchModel.brushes,
+                                onBrushSelect: { brush in
+                                    finishCurrentLineIfNeeded()
+                                    currentLine = Line(points: [], color: ballonSketchModel.selectedColor.color, width: brush.width)
+                                    ballonSketchModel.selectedBrush = brush
+                                }
+                            )
                             
                             Button(action: {
                                 let size = CGSize(width: UIScreen.main.bounds.width - 32, height: 472)
                                 let image = CanvasView(
                                     lines: $ballonSketchModel.lines,
-                                    selectedColor: ballonSketchModel.selectedColor.color,
-                                    selectedWidth: ballonSketchModel.selectedBrush.width
+                                    currentLine: $currentLine,
+                                    getCurrentColor: { ballonSketchModel.selectedColor.color },
+                                    getCurrentWidth: { ballonSketchModel.selectedBrush.width }
                                 ).asImage(size: size)
                                 print("snapshot image size: \(image.size)")
                                 if let data = image.pngData(), data.count > 0 {
@@ -152,6 +111,65 @@ struct BallonSketchView: View {
             BallonChooseSketchView(sketchImageData: sketchImage!)
         }
     }
+    
+    private func finishCurrentLineIfNeeded() {
+        if !currentLine.points.isEmpty {
+            ballonSketchModel.lines.append(currentLine)
+            currentLine = Line(points: [], color: ballonSketchModel.selectedColor.color, width: ballonSketchModel.selectedBrush.width)
+        }
+    }
+    
+    // Вынесенная палитра цветов с callback
+    private var colorPalette: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 24) {
+                ForEach(ballonSketchModel.colors) { sketchColor in
+                    Circle()
+                        .fill(sketchColor.color)
+                        .frame(width: 36, height: 36)
+                        .overlay(
+                            Circle()
+                                .stroke(Color.black.opacity(ballonSketchModel.selectedColor == sketchColor ? 0.7 : 0), lineWidth: 1)
+                        )
+                        .scaleEffect(ballonSketchModel.selectedColor == sketchColor ? 1.15 : 1.0)
+                        .onTapGesture {
+                            onColorSelect(sketchColor)
+                        }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical)
+        }
+        .padding(.top, 20)
+    }
+    
+    private func onColorSelect(_ sketchColor: SketchColor) {
+        finishCurrentLineIfNeeded()
+        currentLine = Line(points: [], color: sketchColor.color, width: ballonSketchModel.selectedBrush.width)
+        ballonSketchModel.selectedColor = sketchColor
+    }
+    
+    private var sketchCanvas: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 24)
+                .fill(Color(red: 247/255, green: 245/255, blue: 233/255))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(Color.gray.opacity(0.3))
+                }
+                .frame(height: 472)
+                .padding(.horizontal)
+            CanvasView(
+                lines: $ballonSketchModel.lines,
+                currentLine: $currentLine,
+                getCurrentColor: { ballonSketchModel.selectedColor.color },
+                getCurrentWidth: { ballonSketchModel.selectedBrush.width }
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 24))
+            .frame(height: 472)
+            .padding(.horizontal)
+        }
+    }
 }
 
 #Preview {
@@ -160,10 +178,9 @@ struct BallonSketchView: View {
 
 struct CanvasView: View {
     @Binding var lines: [Line]
-    var selectedColor: Color
-    var selectedWidth: CGFloat
-    
-    @State private var currentLine: Line = Line(points: [], color: .black, width: 2)
+    @Binding var currentLine: Line
+    var getCurrentColor: () -> Color
+    var getCurrentWidth: () -> CGFloat
     
     var body: some View {
         GeometryReader { geo in
@@ -177,7 +194,6 @@ struct CanvasView: View {
                     }
                     context.stroke(path, with: .color(line.color), lineWidth: line.width)
                 }
-                // Текущая линия
                 var path = Path()
                 if let first = currentLine.points.first {
                     path.move(to: first)
@@ -191,19 +207,22 @@ struct CanvasView: View {
                 .onChanged { value in
                     let newPoint = value.location
                     if value.translation == .zero {
-                        // Начало новой линии
-                        currentLine = Line(points: [newPoint], color: selectedColor, width: selectedWidth)
+                        currentLine = Line(points: [newPoint], color: getCurrentColor(), width: getCurrentWidth())
                     } else {
                         currentLine.points.append(newPoint)
                     }
                 }
                 .onEnded { _ in
-                    if !currentLine.points.isEmpty {
-                        lines.append(currentLine)
-                    }
-                    currentLine = Line(points: [], color: selectedColor, width: selectedWidth)
+                    finishCurrentLineIfNeeded()
                 }
             )
+        }
+    }
+    
+    private func finishCurrentLineIfNeeded() {
+        if !currentLine.points.isEmpty {
+            lines.append(currentLine)
+            currentLine = Line(points: [], color: getCurrentColor(), width: getCurrentWidth())
         }
     }
 }
@@ -217,6 +236,28 @@ extension View {
         let renderer = UIGraphicsImageRenderer(size: size)
         return renderer.image { _ in
             view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
+        }
+    }
+}
+
+struct BrushPicker: View {
+    @Binding var selectedBrush: Brush
+    var brushes: [Brush]
+    var onBrushSelect: (Brush) -> Void
+    
+    var body: some View {
+        ForEach(Array(brushes.enumerated()), id: \.element.id) { index, brush in
+            Image(brush.icon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 48, height: 160)
+                .foregroundColor(.black)
+                .shadow(color: Color(red: 232/255, green: 226/255, blue: 44/255), radius: selectedBrush == brush ? 8 : 0)
+                .offset(y: CGFloat(index) * 20)
+                .onTapGesture {
+                    onBrushSelect(brush)
+                }
+                .animation(.spring(), value: selectedBrush)
         }
     }
 }

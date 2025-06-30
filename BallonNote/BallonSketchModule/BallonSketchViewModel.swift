@@ -22,6 +22,10 @@ class BallonSketchViewModel: ObservableObject {
     @Published var selectedColor: SketchColor = SketchColor(color: .black)
     @Published var lines: [Line] = []
     @Published var agaon = 1
+
+    init() {
+        self.selectedBrush = brushes.first!
+    }
 }
 
 struct Line: Identifiable, Equatable {
