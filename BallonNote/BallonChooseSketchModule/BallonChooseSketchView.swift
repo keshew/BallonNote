@@ -1,6 +1,8 @@
 import SwiftUI
 
-struct BallonChooseView: View {
+struct BallonChooseSketchView: View {
+    var sketchImageData: Data?
+    @StateObject var ballonChooseSketchModel =  BallonChooseSketchViewModel()
     @Environment(\.presentationMode) var presentationMode
     @State var grids = [GridItem(.flexible(), spacing: -20),
                         GridItem(.flexible(), spacing: -20),
@@ -9,31 +11,33 @@ struct BallonChooseView: View {
     @State var thoughts = ["1", "2", "3", "4", "5", "6"]
     @State var chosenThoughts = Array(repeating: "", count: 6)
     
-    init() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
-        appearance.shadowColor = .clear
-        
-        if let customFont = UIFont(name: "Quicksand-Bold", size: 20) {
-            appearance.titleTextAttributes = [
-                .foregroundColor: UIColor.black,
-                .font: customFont
-            ]
-            appearance.largeTitleTextAttributes = [
-                .foregroundColor: UIColor.black,
-                .font: customFont.withSize(34)
-            ]
-        } else {
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-        }
-        
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().tintColor = .white
-    }
+//    init(sketchImageData: Data) {
+//        self.sketchImageData = sketchImageData
+//        print(sketchImageData)
+//        let appearance = UINavigationBarAppearance()
+//        appearance.configureWithOpaqueBackground()
+//        appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
+//        appearance.shadowColor = .clear
+//        
+//        if let customFont = UIFont(name: "Quicksand-Bold", size: 20) {
+//            appearance.titleTextAttributes = [
+//                .foregroundColor: UIColor.black,
+//                .font: customFont
+//            ]
+//            appearance.largeTitleTextAttributes = [
+//                .foregroundColor: UIColor.black,
+//                .font: customFont.withSize(34)
+//            ]
+//        } else {
+//            appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
+//            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
+//        }
+//        
+//        UINavigationBar.appearance().standardAppearance = appearance
+//        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+//        UINavigationBar.appearance().compactAppearance = appearance
+//        UINavigationBar.appearance().tintColor = .white
+//    }
     
     var body: some View {
         NavigationView {
@@ -65,10 +69,10 @@ struct BallonChooseView: View {
                                                                 .overlay(
                                                                     Image("ball\(index + 1)")
                                                                         .resizable()
-                                                                        .frame(width: 31, height: 45)
+                                                                        .frame(width: 23, height: 33)
                                                                 )
                                                         )
-                                                        .frame(width: 79, height: 79)
+                                                        .frame(width: 58, height: 58)
                                                         .cornerRadius(16)
                                                     
                                                     Rectangle()
@@ -81,8 +85,8 @@ struct BallonChooseView: View {
                                                                         .Sand(size: 10)
                                                                 )
                                                         )
-                                                        .frame(height: 26)
-                                                        .cornerRadius(12)
+                                                        .frame(height: 45)
+                                                        .cornerRadius(16)
                                                         .padding(.horizontal, 15)
                                                 }
                                             )
@@ -97,40 +101,27 @@ struct BallonChooseView: View {
                             .SandBold(size: 14)
                             .padding(.top)
                         
-                        ZStack(alignment: .top) {
+                        CustomTextFiled2(text: $ballonChooseSketchModel.nameOfInspire, placeholder: "Enter here name of Inspire")
+                        
+                        ZStack {
                             Rectangle()
                                 .fill(Color(red: 247/255, green: 245/255, blue: 233/255))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 16)
                                         .stroke(Color.gray.opacity(0.3))
+                                        .overlay {
+                                            if let data = sketchImageData, let image = UIImage(data: data) {
+                                                Image(uiImage: image)
+                                                    .resizable()
+                                                    .frame( height: 192)
+                                                    .cornerRadius(12)
+                                                    .padding(.horizontal, 35)
+                                            }
+                                        }
                                 )
                                 .cornerRadius(16)
                                 .frame(height: 192)
                                 .padding(.horizontal)
-                                .padding(.top)
-                            
-                            LazyVGrid(columns: grids, spacing: 15) {
-                                ForEach(Array(thoughts.enumerated()), id: \.element) { (index, thought) in
-                                    Rectangle()
-                                        .fill(Color.white)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 16)
-                                                .stroke(Color.gray.opacity(0.3))
-                                                .overlay(
-                                                    Text(thought)
-                                                        .Sand(size: 10)
-                                                )
-                                        )
-                                        .cornerRadius(16)
-                                        .frame(height: 26)
-                                        .padding(.horizontal, 15)
-                                        .onTapGesture {
-                                            moveThoughtToChosen(thought)
-                                        }
-                                }
-                            }
-                            .padding(.top, 30)
-                            .padding(.horizontal)
                         }
                         
                         Button(action: {}) {
@@ -140,7 +131,7 @@ struct BallonChooseView: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color(red: 248/255, green: 167/255, blue: 54/255), lineWidth: 2)
                                         .overlay(
-                                            Text("Create")
+                                            Text("Create \(sketchImageData)")
                                                 .SandBold(size: 14)
                                         )
                                 )
@@ -194,6 +185,6 @@ struct BallonChooseView: View {
 }
 
 #Preview {
-    BallonChooseView()
+    BallonChooseSketchView(sketchImageData: Data())
 }
 

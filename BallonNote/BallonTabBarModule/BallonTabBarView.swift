@@ -8,9 +8,12 @@ struct BallonTabBarView: View {
         ZStack(alignment: .bottom) {
             VStack {
                 if selectedTab == .Inspire {
+                    BallonInspireView()
                 } else if selectedTab == .Ballons {
                 } else if selectedTab == .Sketch {
+                    BallonSketchView()
                 } else if selectedTab == .Profile {
+                    BallonProfileView()
                 }
             }
             .frame(maxHeight: .infinity)
