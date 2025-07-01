@@ -11,7 +11,7 @@ struct BallonOnboardingView: View {
             
             Image(ballonOnboardingModel.contact.arrayOfImage[ballonOnboardingModel.currentIndex])
                 .resizable()
-                .frame(width: 312, height: 468)
+                .frame(width: UIScreen.main.bounds.width > 900 ? 612 : (UIScreen.main.bounds.width > 600 ? 512 : UIScreen.main.bounds.width > 430 ? 312 : 312), height: UIScreen.main.bounds.width > 900 ? 808 : (UIScreen.main.bounds.width > 600 ? 708 : UIScreen.main.bounds.width > 430 ? 468 : 468))
                 .position(ballonOnboardingModel.currentIndex % 2 == 0 ? CGPoint(x: UIScreen.main.bounds.width / 2.9, y: UIScreen.main.bounds.height / 1.445) : CGPoint(x: UIScreen.main.bounds.width / 1.6, y: UIScreen.main.bounds.height / 1.445))
             
             ScrollView(showsIndicators: false) {
@@ -35,14 +35,13 @@ struct BallonOnboardingView: View {
                                 .padding()
                                 .offset(y: -30)
                         }
-                        .frame(height: 284)
-                        .padding(.horizontal, 50)
+                        .frame(height: UIScreen.main.bounds.width > 900 ? 384 : (UIScreen.main.bounds.width > 600 ? 284 : UIScreen.main.bounds.width > 430 ? 284 : 284))
+                        .padding(.horizontal, UIScreen.main.bounds.width > 900 ? 250 : (UIScreen.main.bounds.width > 600 ? 190 : UIScreen.main.bounds.width > 430 ? 50 : 50))
                     
                     HStack {
                         if ballonOnboardingModel.currentIndex % 2 == 0 {
                             Spacer()
                         }
-                  
                         
                         Rectangle()
                             .fill(ballonOnboardingModel.contact.arrayOfColors[ballonOnboardingModel.currentIndex])

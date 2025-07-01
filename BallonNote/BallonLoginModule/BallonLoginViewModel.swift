@@ -22,6 +22,9 @@ class BallonLoginViewModel: ObservableObject {
                     switch result {
                     case .success(_):
                         self?.isTab = true
+                        UserDefaultsManager().saveCurrentEmail(self?.email ?? "")
+                        UserDefaultsManager().savePassword(self?.password ?? "")
+                        UserDefaultsManager().saveLoginStatus(true)
                         break
                     case .failure(let error):
                         if let networkError = error as? NetworkManager.NetworkError {

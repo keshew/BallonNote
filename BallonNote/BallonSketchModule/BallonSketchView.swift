@@ -11,123 +11,103 @@ struct BallonSketchView: View {
     @State var sketchImage: Data? = nil
     @State private var currentLine: Line = Line(points: [], color: .black, width: 2)
     
-    func unut() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
-        appearance.shadowColor = .clear
-        
-        if let customFont = UIFont(name: "Quicksand-Bold", size: 20) {
-            appearance.titleTextAttributes = [
-                .foregroundColor: UIColor.black,
-                .font: customFont
-            ]
-            appearance.largeTitleTextAttributes = [
-                .foregroundColor: UIColor.black,
-                .font: customFont.withSize(34)
-            ]
-        } else {
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-        }
-        
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().tintColor = .white
-    }
-    
     var body: some View {
-        NavigationView {
-            ZStack {
-                Image(.bg)
-                    .resizable()
-                    .ignoresSafeArea()
-                
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 16) {
-                        colorPalette
-                        sketchCanvas
-                        
-                        HStack(spacing: 12) {
-                            BrushPicker(
-                                selectedBrush: $ballonSketchModel.selectedBrush,
-                                brushes: ballonSketchModel.brushes,
-                                onBrushSelect: { brush in
-                                    finishCurrentLineIfNeeded()
-                                    currentLine = Line(points: [], color: ballonSketchModel.selectedColor.color, width: brush.width)
-                                    ballonSketchModel.selectedBrush = brush
-                                }
-                            )
-                            
-                            Button(action: {
-                                let size = CGSize(width: UIScreen.main.bounds.width - 32, height: 472)
-                                let image = CanvasView(
-                                    lines: $ballonSketchModel.lines,
-                                    currentLine: $currentLine,
-                                    getCurrentColor: { ballonSketchModel.selectedColor.color },
-                                    getCurrentWidth: { ballonSketchModel.selectedBrush.width }
-                                ).asImage(size: size)
-                                
-                                if let data = image.pngData(), data.count > 0 {
-                                    sketchImage = data
-                                    showChooseScreen = true
-                                    ballonSketchModel.agaon = 0
-                                } else {
-                                    print("snapshot error")
-                                }
-                            }) {
-                                Rectangle()
-                                    .fill(Color(red: 232/255, green: 226/255, blue: 44/255))
-                                    .overlay {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(Color(red: 248/255, green: 167/255, blue: 54/255), lineWidth: 2)
-                                            .overlay {
-                                                Text("Add")
-                                                    .SandBold(size: 14)
+        ZStack {
+            Image(.bg)
+                .resizable()
+                .ignoresSafeArea()
+            
+            Color(red: 233/255, green: 225/255, blue: 46/255)
+                .frame(height: 170)
+                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / -35)
+            
+            ScrollView(showsIndicators: false) {
+                VStack {
+                    HStack {
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            Circle()
+                                .fill(Color.white)
+                                .frame(width: 35, height: 35)
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.orange, lineWidth: 1)
+                                        .overlay {
+                                            VStack {
+                                                Image(.backButton)
+                                                    .resizable()
+                                                    .frame(width: 15, height: 15)
+                                                    .offset(x: -1)
+                                                
+                                                Text("Back")
+                                                    .Sand(size: 6)
                                             }
-                                    }
-                                    .frame(height: 48)
-                                    .cornerRadius(10)
-                                    .padding(.horizontal, 20)
-                            }
-                        }
-                        .padding(.top, 8)
-                        .padding(.leading)
-                    }
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Sketch")
-            .navigationTitle("Choose ballons")  .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Circle()
-                            .fill(Color.white)
-                            .frame(width: 35, height: 35)
-                            .overlay(
-                                Circle()
-                                    .stroke(Color.orange, lineWidth: 1)
-                                    .overlay {
-                                        VStack {
-                                            Image(.backButton)
-                                                .resizable()
-                                                .frame(width: 15, height: 15)
-                                                .offset(x: -1)
-                                            
-                                            Text("Back")
-                                                .Sand(size: 6)
                                         }
-                                    }
-                            )
+                                )
+                        }
+                        
+                        Spacer()
+                        
+                        Text("Sketch")
+                            .SandBold(size: 20)
+                            .padding(.trailing, 30)
+                        
+                        Spacer()
                     }
+                    .padding(.top, 5)
+                    .padding(.horizontal)
+                    
+                    colorPalette
+                    sketchCanvas
+                    
+                    HStack(spacing: 12) {
+                        BrushPicker(
+                            selectedBrush: $ballonSketchModel.selectedBrush,
+                            brushes: ballonSketchModel.brushes,
+                            onBrushSelect: { brush in
+                                finishCurrentLineIfNeeded()
+                                currentLine = Line(points: [], color: ballonSketchModel.selectedColor.color, width: brush.width)
+                                ballonSketchModel.selectedBrush = brush
+                            }
+                        )
+                        
+                        Button(action: {
+                            let size = CGSize(width: UIScreen.main.bounds.width - 32, height: 472)
+                            let image = CanvasView(
+                                lines: $ballonSketchModel.lines,
+                                currentLine: $currentLine,
+                                getCurrentColor: { ballonSketchModel.selectedColor.color },
+                                getCurrentWidth: { ballonSketchModel.selectedBrush.width }
+                            ).asImage(size: size)
+                            
+                            if let data = image.pngData(), data.count > 0 {
+                                sketchImage = data
+                                showChooseScreen = true
+                                ballonSketchModel.agaon = 0
+                            } else {
+                                print("snapshot error")
+                            }
+                        }) {
+                            Rectangle()
+                                .fill(Color(red: 232/255, green: 226/255, blue: 44/255))
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color(red: 248/255, green: 167/255, blue: 54/255), lineWidth: 2)
+                                        .overlay {
+                                            Text("Add")
+                                                .SandBold(size: 14)
+                                        }
+                                }
+                                .frame(height: 48)
+                                .cornerRadius(10)
+                                .padding(.horizontal, 20)
+                        }
+                    }
+                    .padding(.top, 8)
+                    .padding(.leading)
                 }
             }
-        }
-        .onAppear() {
-            unut()
         }
         .fullScreenCover(isPresented: $showChooseScreen) {
             BallonChooseSketchView(sketchImageData: sketchImage!)
@@ -270,8 +250,8 @@ struct BrushPicker: View {
         ForEach(Array(brushes.enumerated()), id: \.element.id) { index, brush in
             Image(brush.icon)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 48, height: 260)
+//                .aspectRatio(contentMode: .fit)
+                .frame(width: UIScreen.main.bounds.width > 900 ? 96 : UIScreen.main.bounds.width > 600 ? 68 : 48, height: UIScreen.main.bounds.width > 900 ? 720 : UIScreen.main.bounds.width > 600 ? 560 : 260)
                 .foregroundColor(.black)
                 .shadow(color: Color(red: 232/255, green: 226/255, blue: 44/255), radius: selectedBrush == brush ? 8 : 0)
                 .offset(y: CGFloat(index) * 20)

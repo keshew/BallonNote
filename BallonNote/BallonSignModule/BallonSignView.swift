@@ -56,7 +56,8 @@ struct BallonSignView: View {
                                             }
                                             
                                             Button(action: {
-                                                
+                                                ballonSignModel.isTab = true
+                                                UserDefaultsManager().enterAsGuest()
                                             }) {
                                                 Rectangle()
                                                     .fill(Color(red: 233/255, green: 227/255, blue: 50/255))

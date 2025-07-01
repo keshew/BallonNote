@@ -71,4 +71,37 @@ class UserDefaultsManager: ObservableObject {
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "currentEmail")
     }
+    
+    func saveName(_ name: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(name, forKey: "name")
+    }
+    
+    func getName() -> String? {
+        let defaults = UserDefaults.standard
+        return defaults.string(forKey: "name")
+    }
+    
+    func deleteName() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "name")
+    }
+    
+    func clearAllUserData() {
+          let defaults = UserDefaults.standard
+          
+          let keysToRemove = [
+              "guest",
+              "isLoggedIn",
+              "currentEmail",
+              "password",
+              "name"
+          ]
+          
+          for key in keysToRemove {
+              defaults.removeObject(forKey: key)
+          }
+        
+          defaults.synchronize()
+      }
 }

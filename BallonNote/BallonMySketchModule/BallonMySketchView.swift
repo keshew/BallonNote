@@ -3,94 +3,77 @@ import SwiftUI
 struct BallonMySketchView: View {
     @StateObject var ballonMySketchModel =  BallonMySketchViewModel()
     @State var isAdd = false
-    func setupNavigationBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
-        appearance.shadowColor = .clear
-
-        if let customFont = UIFont(name: "Quicksand-Bold", size: 20) {
-            appearance.titleTextAttributes = [
-                .foregroundColor: UIColor.black,
-                .font: customFont
-            ]
-            appearance.largeTitleTextAttributes = [
-                .foregroundColor: UIColor.black,
-                .font: customFont.withSize(34)
-            ]
-        } else {
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-        }
-
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().tintColor = .white
-    }
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Image(.bg)
-                    .resizable()
-                    .ignoresSafeArea()
-                
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 16) {
-                        ForEach(ballonMySketchModel.cards) { card in
-                            SwipeToDeleteCard2(card: card) {
-                                withAnimation {
-                                    ballonMySketchModel.delete(card: card)
-                                }
-                            } onTap: {
-                                ballonMySketchModel.isDetail = true
-                            }
-                        }
+        ZStack {
+            Image(.bg)
+                .resizable()
+                .ignoresSafeArea()
+            
+            Color(red: 233/255, green: 225/255, blue: 46/255)
+                .frame(height: 170)
+                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / -35)
+            
+            ScrollView(showsIndicators: false) {
+                VStack {
+                    HStack {
+                        Spacer()
+                        Text("Ballons")
+                            .SandBold(size: 20)
+                            .padding(.leading, 35)
                         
-                        Color.clear.frame(height: 80)
-                    }
-                    .padding(.top)
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("My sketches")
-            .navigationTitle("Choose ballons")  .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        isAdd = true
-                    }) {
-                        Circle()
-                            .fill(Color.white)
-                            .frame(width: 35, height: 35)
-                            .overlay(
-                                Circle()
-                                    .stroke(Color.orange, lineWidth: 1)
-                                    .overlay {
-                                        VStack {
-                                            Image(systemName: "plus")
-                                                .font(.system(size: 14,weight: .semibold))
-                                                .foregroundStyle(.black)
-
-                                            Text("Add")
-                                                .Sand(size: 6)
+                        Spacer()
+                        Button(action: {
+                            isAdd = true
+                        }) {
+                            Circle()
+                                .fill(Color.white)
+                                .frame(width: 35, height: 35)
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.orange, lineWidth: 1)
+                                        .overlay {
+                                            VStack {
+                                                Image(systemName: "plus")
+                                                    .font(.system(size: 14,weight: .semibold))
+                                                    .foregroundStyle(.black)
+                                                
+                                                Text("Add")
+                                                    .Sand(size: 6)
+                                            }
                                         }
-                                    }
-                            )
+                                )
+                        }
+                        .padding(.trailing)
                     }
+                    .padding(.top, -10)
+                    .padding(.horizontal)
+                    
+                    ForEach(ballonMySketchModel.cards) { card in
+                        SwipeToDeleteCard2(card: card, onDelete: {
+                            withAnimation {
+                                ballonMySketchModel.delete(card: card, login: UserDefaultsManager().getEmail() ?? "", sketchId: card.sketchId)
+                            }
+                        }, onTap: {
+//                                ballonMySketchModel.isDetail = true
+                        })
+                    }
+                    
+                    Color.clear.frame(height: 80)
                 }
+                .padding(.top)
             }
         }
-        .fullScreenCover(isPresented: $ballonMySketchModel.isDetail) {
-            BallonDetailBallonView()
-        }
+        
+//        .fullScreenCover(isPresented: $ballonMySketchModel.isDetail) {
+//            BallonDetailBallonView()
+//        }
         .fullScreenCover(isPresented: $isAdd) {
             BallonSketchView()
         }
         .onAppear {
-            setupNavigationBarAppearance()
-            ballonMySketchModel.fetchCards(login: "йцуйцу")
-          }
+            ballonMySketchModel.fetchCards(login: UserDefaultsManager().getEmail() ?? "йцуйцу")
+        }
     }
 }
 
@@ -99,15 +82,18 @@ struct BallonMySketchView: View {
 }
 
 struct BallonCard2: Identifiable, Equatable {
-    let id = UUID()
+    let sketchId: String
     let name: String
-    let ballons: [Data?]  // Массив данных изображений для шариков
+    let ballons: [Data?]
+    
+    var id: String { sketchId }
 }
+
 
 struct BallonNode2: Identifiable {
     let id: Int
     let imageName: String
-    let imageData: Data?   // Данные изображения для отображения
+    let imageData: Data?
     let position: CGPoint
     let connections: [Int]
 }

@@ -22,8 +22,11 @@ class BallonSignViewModel: ObservableObject {
         NetworkManager.shared.register(login: email, pass: password, name: name, email: email) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let successMessage):
-                    print("Registration success: \(successMessage)")
+                case .success(_):
+                    UserDefaultsManager().saveCurrentEmail(self?.email ?? "")
+                    UserDefaultsManager().savePassword(self?.password ?? "")
+                    UserDefaultsManager().saveName(self?.name ?? "")
+                    UserDefaultsManager().saveLoginStatus(true)
                     self?.isTab = true
                 case .failure(let error):
                     self?.alertMessage = error.localizedDescription

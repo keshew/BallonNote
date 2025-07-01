@@ -3,65 +3,47 @@ import SwiftUI
 struct BallonMyBallonsView: View {
     @StateObject var ballonMyBallonsModel = BallonMyBallonsViewModel()
     
-    func setupNavigationBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
-        appearance.shadowColor = .clear
-
-        if let customFont = UIFont(name: "Quicksand-Bold", size: 20) {
-            appearance.titleTextAttributes = [
-                .foregroundColor: UIColor.black,
-                .font: customFont
-            ]
-            appearance.largeTitleTextAttributes = [
-                .foregroundColor: UIColor.black,
-                .font: customFont.withSize(34)
-            ]
-        } else {
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-        }
-
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().tintColor = .white
-    }
+   
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Image(.bg)
-                    .resizable()
-                    .ignoresSafeArea()
-                
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 16) {
-                        ForEach(ballonMyBallonsModel.cards) { card in
-                            SwipeToDeleteCard(card: card) {
-                                withAnimation {
-                                    ballonMyBallonsModel.delete(card: card, login: "йцуйцу")
-                                }
-                            } onTap: {
-                                ballonMyBallonsModel.isDetail = true
-                            }
-                        }
-                        
-                        Color.clear.frame(height: 80)
+        ZStack {
+            Image(.bg)
+                .resizable()
+                .ignoresSafeArea()
+            Color(red: 233/255, green: 225/255, blue: 46/255)
+                .frame(height: 170)
+                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / -35)
+            
+            ScrollView(showsIndicators: false) {
+                VStack {
+                    HStack {
+                        Text("Ballons")
+                            .SandBold(size: 20)
                     }
-                    .padding(.top)
+                    .padding(.top, 0)
+                    
+                    .padding(.horizontal)
+                    
+                    ForEach(ballonMyBallonsModel.cards) { card in
+                        SwipeToDeleteCard(card: card) {
+                            withAnimation {
+                                ballonMyBallonsModel.delete(card: card, login: UserDefaultsManager().getEmail() ?? "йцуйцу")
+                            }
+                        } onTap: {
+//                            ballonMyBallonsModel.isDetail = true
+                        }
+                    }
+                    
+                    Color.clear.frame(height: 80)
                 }
+                .padding(.top)
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("My ballons")
         }
-        .fullScreenCover(isPresented: $ballonMyBallonsModel.isDetail) {
-            BallonDetailBallonView()
-        }
+//        .fullScreenCover(isPresented: $ballonMyBallonsModel.isDetail) {
+//            BallonDetailBallonView()
+//        }
         .onAppear {
-            setupNavigationBarAppearance()
-              ballonMyBallonsModel.fetchCards(login: "йцуйцу")
+              ballonMyBallonsModel.fetchCards(login: UserDefaultsManager().getEmail() ?? "йцуйцу")
           }
     }
 }
