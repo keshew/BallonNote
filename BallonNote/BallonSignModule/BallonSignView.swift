@@ -38,7 +38,7 @@ struct BallonSignView: View {
                                         
                                         VStack(spacing: 20) {
                                             Button(action: {
-                                                
+                                                ballonSignModel.register()
                                             }) {
                                                 Rectangle()
                                                     .fill(Color(red: 233/255, green: 227/255, blue: 50/255))
@@ -78,7 +78,7 @@ struct BallonSignView: View {
                                                     .SandBold(size: 12, color: Color(red: 108/255, green: 114/255, blue: 119/255))
                                                 
                                                 Button(action: {
-                                                    
+                                                    ballonSignModel.isLogin = true
                                                 }) {
                                                     Text("Log in")
                                                         .SandBold(size: 12, color: Color(red: 230/255, green: 230/255, blue: 77/255))
@@ -96,6 +96,17 @@ struct BallonSignView: View {
             }
             .scrollDisabled(UIScreen.main.bounds.width > 380  ? true : false)
         }
+        .fullScreenCover(isPresented: $ballonSignModel.isLogin) {
+            BallonLoginView()
+        }
+        .fullScreenCover(isPresented: $ballonSignModel.isTab) {
+            BallonTabBarView()
+        }
+        .alert(isPresented: $ballonSignModel.showAlert) {
+               Alert(title: Text("Registration Error"),
+                     message: Text(ballonSignModel.alertMessage),
+                     dismissButton: .default(Text("OK")))
+           }
     }
 }
 

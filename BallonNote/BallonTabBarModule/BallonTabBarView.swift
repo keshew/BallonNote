@@ -12,7 +12,7 @@ struct BallonTabBarView: View {
                 } else if selectedTab == .Ballons {
                     BallonMyBallonsView()
                 } else if selectedTab == .Sketch {
-                    BallonSketchView()
+                    BallonMySketchView()
                 } else if selectedTab == .Profile {
                     BallonProfileView()
                 }
@@ -99,7 +99,6 @@ struct TabBarItem: View {
                         }
                     }
             }
-//            .frame(maxWidth: .infinity)
         }
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BallonDetailBallonView: View {
-    @StateObject var ballonDetailBallonModel =  BallonDetailBallonViewModel()
+    @StateObject var viewModel = BallonDetailBallonViewModel()
     @Environment(\.presentationMode) var presentationMode
     
     init() {
@@ -37,50 +37,56 @@ struct BallonDetailBallonView: View {
                     .resizable()
                     .ignoresSafeArea()
                 
-                ScrollView(showsIndicators: false) {
-                    VStack {
-                        Rectangle()
-                            .fill(Color(red: 247/255, green: 245/255, blue: 233/255))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 24)
-                                    .stroke(.gray.opacity(0.3), lineWidth: 2)
-                                    .overlay {
-                                        VStack(spacing: 15) {
-                                            Text("Name of inspire")
-                                                .Sand(size: 12)
+                GeometryReader { geo in
+                    ScrollView(showsIndicators: false) {
+                        ZStack {
+                            ForEach(0..<viewModel.balloons.count-1, id: \.self) { i in
+                                let fromLeft = i % 2 == 0
+                                let toLeft = (i+1) % 2 == 0
+                                let y1 = CGFloat(i) * 120 + 80
+                                let y2 = CGFloat(i+1) * 120 + 80
+                                let x1 = fromLeft ? geo.size.width * 0.22 : geo.size.width * 0.78
+                                let x2 = toLeft ? geo.size.width * 0.22 : geo.size.width * 0.78
+                                BalloonLine(from: CGPoint(x: x1, y: y1), to: CGPoint(x: x2, y: y2))
+                            }
+                            
+                            ForEach(Array(viewModel.balloons.enumerated()), id: \.element.id) { i, balloon in
+                                let isLeft = i % 2 == 0
+                                let y = CGFloat(i) * 120 + 80
+                                let x = isLeft ? geo.size.width * 0.22 : geo.size.width * 0.78
+                                ZStack {
+                                    BalloonView(balloon: balloon)
+                                        .onTapGesture {
+                                            withAnimation { viewModel.selectBalloon(balloon) }
+                                        }
+                                        .shadow(radius: 4)
+                                        .opacity(viewModel.selectedBalloonID == balloon.id ? 0.5 : 1)
+                                    
+                                    if viewModel.selectedBalloonID == balloon.id {
+                                        VStack(spacing: 0) {
+                                            Button(action: {
+                                                withAnimation { viewModel.deleteSelectedBalloon() }
+                                            }) {
+                                                Image(.delete)
+                                                    .resizable()
+                                                    .frame(width: 42, height: 42)
+                                            }
+                                            .offset(x: -40, y: -60)
+                                            Spacer().frame(height: 0)
                                         }
                                     }
-                            }
-                            .frame(height: 95)
-                            .cornerRadius(24)
-                            .padding(.horizontal, 40)
-                            .padding(.top, 20)
-                        
-                        
-                        Button(action: {
-                            
-                        }) {
-                            Rectangle()
-                                .fill(Color(red: 232/255, green: 226/255, blue: 44/255))
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color(red: 248/255, green: 167/255, blue: 54/255), lineWidth: 2)
-                                        .overlay {
-                                            Text("Next")
-                                                .SandBold(size: 14)
-                                        }
                                 }
-                                .frame(height: 48)
-                                .cornerRadius(10)
-                                .padding(.horizontal, 40)
+                                .position(x: x, y: y)
+                                .animation(.spring(), value: viewModel.balloons)
+                            }
                         }
-                        .padding(.top, 40)
+                        .frame(height: CGFloat(max(geo.size.height, CGFloat(viewModel.balloons.count) * 120 + 100)))
                     }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Details")
-            .navigationTitle("Choose ballons")  .toolbar {
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
@@ -97,7 +103,6 @@ struct BallonDetailBallonView: View {
                                                 .resizable()
                                                 .frame(width: 15, height: 15)
                                                 .offset(x: -1)
-                                            
                                             Text("Back")
                                                 .Sand(size: 6)
                                         }
@@ -107,6 +112,36 @@ struct BallonDetailBallonView: View {
                 }
             }
         }
+    }
+}
+
+private struct BalloonView: View {
+    let balloon: BalloonItem
+    var body: some View {
+        ZStack {
+            Image(.ball1)
+                .resizable()
+                .frame(width: 75, height: 109)
+            
+            Text(balloon.text)
+                .Sand(size: 12)
+                .multilineTextAlignment(.center)
+                .padding(8)
+                .frame(width: 70, height: 65)
+                .offset(y: -13)
+        }
+    }
+}
+
+private struct BalloonLine: View {
+    let from: CGPoint
+    let to: CGPoint
+    var body: some View {
+        Path { path in
+            path.move(to: from)
+            path.addLine(to: to)
+        }
+        .stroke(.black, lineWidth: 2)
     }
 }
 

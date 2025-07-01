@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct BallonChooseView: View {
+    @StateObject var ballonChooseModel = BallonChooseViewModel()
     @Environment(\.presentationMode) var presentationMode
     @State var grids = [GridItem(.flexible(), spacing: -20),
                         GridItem(.flexible(), spacing: -20),
@@ -8,8 +9,10 @@ struct BallonChooseView: View {
     
     @State var thoughts = ["1", "2", "3", "4", "5", "6"]
     @State var chosenThoughts = Array(repeating: "", count: 6)
+    @Binding var chosenName: String
+    @Binding var getThoughts: [String]
     
-    init() {
+    func setupNavigationBar() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
@@ -110,7 +113,7 @@ struct BallonChooseView: View {
                                 .padding(.top)
                             
                             LazyVGrid(columns: grids, spacing: 15) {
-                                ForEach(Array(thoughts.enumerated()), id: \.element) { (index, thought) in
+                                ForEach(Array(getThoughts.enumerated()), id: \.element) { (index, thought) in
                                     Rectangle()
                                         .fill(Color.white)
                                         .overlay(
@@ -133,7 +136,20 @@ struct BallonChooseView: View {
                             .padding(.horizontal)
                         }
                         
-                        Button(action: {}) {
+                        Button(action: {
+                            ballonChooseModel.saveInspire(
+                                  login: "йцуйцу",
+                                  name: chosenName,
+                                  thoughts: chosenThoughts
+                              ) { result in
+                                  switch result {
+                                  case .success(let message):
+                                      print("Success: \(message)")
+                                  case .failure(let error):
+                                      print("Error: \(error.localizedDescription)")
+                                  }
+                              }
+                        }) {
                             Rectangle()
                                 .fill(Color(red: 232/255, green: 226/255, blue: 44/255))
                                 .overlay(
@@ -181,19 +197,22 @@ struct BallonChooseView: View {
                 }
             }
         }
+        .onAppear {
+            setupNavigationBar()
+        }
     }
     
     func moveThoughtToChosen(_ thought: String) {
         if let idx = chosenThoughts.firstIndex(where: { $0.isEmpty }) {
             chosenThoughts[idx] = thought
-            if let removeIdx = thoughts.firstIndex(of: thought) {
-                thoughts.remove(at: removeIdx)
+            if let removeIdx = getThoughts.firstIndex(of: thought) {
+                getThoughts.remove(at: removeIdx)
             }
         }
     }
 }
 
 #Preview {
-    BallonChooseView()
+    BallonChooseView(chosenName: .constant(""), getThoughts: .constant(["123"]))
 }
 

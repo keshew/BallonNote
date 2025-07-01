@@ -72,7 +72,7 @@ struct BallonOnboardingView: View {
                                         ballonOnboardingModel.currentIndex += 1
                                     }
                                 } else {
-                                    
+                                    ballonOnboardingModel.isLogin = true
                                 }
                             }
                         
@@ -86,6 +86,9 @@ struct BallonOnboardingView: View {
                 .padding(.top, 90)
             }
             .scrollDisabled(UIScreen.main.bounds.width > 380  ? true : false)
+        }
+        .fullScreenCover(isPresented: $ballonOnboardingModel.isLogin) {
+            BallonLoginView()
         }
     }
 }

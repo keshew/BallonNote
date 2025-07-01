@@ -11,10 +11,11 @@ struct BallonChooseSketchView: View {
     @State var thoughts = ["1", "2", "3", "4", "5", "6"]
     @State var chosenThoughts = Array(repeating: "", count: 6)
     @State var selectedBallonIndices: Set<Int> = []
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     
     init(sketchImageData: Data) {
         self.sketchImageData = sketchImageData
-        print(sketchImageData)
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
@@ -40,6 +41,37 @@ struct BallonChooseSketchView: View {
         UINavigationBar.appearance().tintColor = .white
     }
     
+    func saveSketchAction() {
+        guard !ballonChooseSketchModel.nameOfInspire.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            alertMessage = "Please, enter name of inspire"
+            showAlert = true
+            return
+        }
+        
+        guard let data = sketchImageData else {
+            alertMessage = "No sketch to save it"
+            showAlert = true
+            return
+        }
+        
+        let base64String = data.base64EncodedString()
+        let sketch = NetworkManager.SketchModel(
+            id: UUID().uuidString,
+            name: ballonChooseSketchModel.nameOfInspire,
+            images: [base64String]
+        )
+        
+        ballonChooseSketchModel.saveSketch(login: "йцуйцу", sketch: sketch) { result in
+            switch result {
+            case .success(let message):
+                print("Сохранено успешно: \(message)")
+            case .failure(_):
+                alertMessage = "Something went wrong"
+                showAlert = true
+            }
+        }
+    }
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -140,7 +172,9 @@ struct BallonChooseSketchView: View {
                                 .padding(.horizontal)
                         }
                         
-                        Button(action: {}) {
+                        Button(action: {
+                            saveSketchAction()
+                        }) {
                             Rectangle()
                                 .fill(Color(red: 232/255, green: 226/255, blue: 44/255))
                                 .overlay(
@@ -188,6 +222,9 @@ struct BallonChooseSketchView: View {
                 }
             }
         }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
     
     func moveThoughtToChosen(_ thought: String) {
@@ -209,3 +246,8 @@ struct BallonChooseSketchView: View {
     BallonChooseSketchView(sketchImageData: Data())
 }
 
+struct SketchModel: Codable, Identifiable {
+    var id = UUID().uuidString
+    var name: String
+    var image: Data
+}

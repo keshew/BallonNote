@@ -3,7 +3,7 @@ import SwiftUI
 struct BallonInspireView: View {
     @StateObject var ballonInspireModel = BallonInspireViewModel()
     @State private var showAlert = false
-    
+    @State var isNext = false
     let maxThoughts = 6
     let thoughtTitles = [
         "First thought",
@@ -108,7 +108,7 @@ struct BallonInspireView: View {
                         }
                         
                         Button(action: {
-                            
+                            isNext = true
                         }) {
                             Rectangle()
                                 .fill(Color(red: 232/255, green: 226/255, blue: 44/255))
@@ -125,6 +125,8 @@ struct BallonInspireView: View {
                                 .padding(.horizontal, 40)
                         }
                         .padding(.top, 40)
+                        
+                        Color.clear.frame(height: 80)
                     }
                 }
             }
@@ -137,6 +139,9 @@ struct BallonInspireView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
+        }
+        .fullScreenCover(isPresented: $isNext) {
+            BallonChooseView(chosenName: $ballonInspireModel.nameOfInspire, getThoughts: $ballonInspireModel.thoughts)
         }
     }
 }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BallonLoginView: View {
     @StateObject var ballonLoginModel =  BallonLoginViewModel()
-
+    
     var body: some View {
         ZStack {
             Image(.bg)
@@ -36,7 +36,7 @@ struct BallonLoginView: View {
                                         
                                         VStack(spacing: 20) {
                                             Button(action: {
-                                                
+                                                ballonLoginModel.login()
                                             }) {
                                                 Rectangle()
                                                     .fill(Color(red: 233/255, green: 227/255, blue: 50/255))
@@ -76,7 +76,7 @@ struct BallonLoginView: View {
                                                     .SandBold(size: 12, color: Color(red: 108/255, green: 114/255, blue: 119/255))
                                                 
                                                 Button(action: {
-                                                    
+                                                    ballonLoginModel.isSign = true
                                                 }) {
                                                     Text("Register")
                                                         .SandBold(size: 12, color: Color(red: 230/255, green: 230/255, blue: 77/255))
@@ -94,6 +94,19 @@ struct BallonLoginView: View {
                 }
             }
             .scrollDisabled(UIScreen.main.bounds.width > 380  ? true : false)
+        }
+        .fullScreenCover(isPresented: $ballonLoginModel.isSign) {
+            BallonSignView()
+        }
+        .fullScreenCover(isPresented: $ballonLoginModel.isTab) {
+            BallonTabBarView()
+        }
+        .alert(isPresented: $ballonLoginModel.showAlert) {
+            Alert(
+                title: Text("Login Error"),
+                message: Text(ballonLoginModel.alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

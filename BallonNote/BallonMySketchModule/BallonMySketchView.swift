@@ -1,8 +1,8 @@
 import SwiftUI
 
-struct BallonMyBallonsView: View {
-    @StateObject var ballonMyBallonsModel = BallonMyBallonsViewModel()
-    
+struct BallonMySketchView: View {
+    @StateObject var ballonMySketchModel =  BallonMySketchViewModel()
+    @State var isAdd = false
     func setupNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -38,13 +38,13 @@ struct BallonMyBallonsView: View {
                 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 16) {
-                        ForEach(ballonMyBallonsModel.cards) { card in
-                            SwipeToDeleteCard(card: card) {
+                        ForEach(ballonMySketchModel.cards) { card in
+                            SwipeToDeleteCard2(card: card) {
                                 withAnimation {
-                                    ballonMyBallonsModel.delete(card: card, login: "йцуйцу")
+                                    ballonMySketchModel.delete(card: card)
                                 }
                             } onTap: {
-                                ballonMyBallonsModel.isDetail = true
+                                ballonMySketchModel.isDetail = true
                             }
                         }
                         
@@ -54,66 +54,66 @@ struct BallonMyBallonsView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("My ballons")
+            .navigationTitle("My sketches")
+            .navigationTitle("Choose ballons")  .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        isAdd = true
+                    }) {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 35, height: 35)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.orange, lineWidth: 1)
+                                    .overlay {
+                                        VStack {
+                                            Image(systemName: "plus")
+                                                .font(.system(size: 14,weight: .semibold))
+                                                .foregroundStyle(.black)
+
+                                            Text("Add")
+                                                .Sand(size: 6)
+                                        }
+                                    }
+                            )
+                    }
+                }
+            }
         }
-        .fullScreenCover(isPresented: $ballonMyBallonsModel.isDetail) {
+        .fullScreenCover(isPresented: $ballonMySketchModel.isDetail) {
             BallonDetailBallonView()
+        }
+        .fullScreenCover(isPresented: $isAdd) {
+            BallonSketchView()
         }
         .onAppear {
             setupNavigationBarAppearance()
-              ballonMyBallonsModel.fetchCards(login: "йцуйцу")
+            ballonMySketchModel.fetchCards(login: "йцуйцу")
           }
     }
 }
 
-struct BallonNode: Identifiable {
+#Preview {
+    BallonMySketchView()
+}
+
+struct BallonCard2: Identifiable, Equatable {
+    let id = UUID()
+    let name: String
+    let ballons: [Data?]  // Массив данных изображений для шариков
+}
+
+struct BallonNode2: Identifiable {
     let id: Int
     let imageName: String
-    let text: String
+    let imageData: Data?   // Данные изображения для отображения
     let position: CGPoint
     let connections: [Int]
 }
 
-struct BallonGraphView: View {
-    let ballons: [BallonNode]
-    var body: some View {
-        ZStack {
-            Canvas { context, size in
-                for ballon in ballons {
-                    for connection in ballon.connections {
-                        if let to = ballons.first(where: { $0.id == connection }) {
-                            let fromPoint = ballon.position
-                            let toPoint = to.position
-                            var path = Path()
-                            path.move(to: fromPoint)
-                            path.addLine(to: toPoint)
-                            context.stroke(path, with: .color(.black), lineWidth: 2)
-                        }
-                    }
-                }
-            }
-            
-            ForEach(ballons) { ballon in
-                VStack(spacing: 0) {
-                    Image(ballon.imageName)
-                        .resizable()
-                        .overlay {
-                            Text(ballon.text)
-                                .Sand(size: 8)
-                                .offset(y: -7)
-                        }
-                        .frame(width: 37, height: 57)
-                 
-                }
-                .position(ballon.position)
-            }
-        }
-        .frame(height: 154)
-    }
-}
-
-struct SwipeToDeleteCard: View {
-    let card: BallonCard
+struct SwipeToDeleteCard2: View {
+    let card: BallonCard2
     var onDelete: () -> Void
     var onTap: () -> Void
     @State private var offset: CGFloat = 0
@@ -174,7 +174,7 @@ struct SwipeToDeleteCard: View {
                                 .fill(.white)
                                 .overlay {
                                     VStack(spacing: 10) {
-                                        BallonGraphView(ballons: BallonGraphView.nodes(from: card.ballons))
+                                        BallonGraphView2(ballons: BallonGraphView2.nodes(from: card.ballons))
                                     }
                                 }
                                 .frame(height: 170)
@@ -192,10 +192,51 @@ struct SwipeToDeleteCard: View {
     }
 }
 
-extension BallonGraphView {
-    static func nodes(from ballons: [String]) -> [BallonNode] {
-        let filteredBallons = ballons.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-        
+struct BallonGraphView2: View {
+    let ballons: [BallonNode2]
+    var body: some View {
+        ZStack {
+            Canvas { context, size in
+                for ballon in ballons {
+                    for connection in ballon.connections {
+                        if let to = ballons.first(where: { $0.id == connection }) {
+                            var path = Path()
+                            path.move(to: ballon.position)
+                            path.addLine(to: to.position)
+                            context.stroke(path, with: .color(.black), lineWidth: 2)
+                        }
+                    }
+                }
+            }
+            ForEach(ballons) { ballon in
+                VStack(spacing: 0) {
+                    Image(ballon.imageName)
+                        .resizable()
+                        .overlay {
+                            if let data = ballon.imageData, let uiImage = UIImage(data: data) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                    .offset(y: -7)
+                            } else {
+                                Text("No Img")
+                                    .font(.caption2)
+                                    .foregroundColor(.gray)
+                                    .offset(y: -7)
+                            }
+                        }
+                        .frame(width: 37, height: 57)
+                }
+                .position(ballon.position)
+            }
+        }
+        .frame(height: 154)
+    }
+}
+
+extension BallonGraphView2 {
+    static func nodes(from images: [Data?]) -> [BallonNode2] {
         let positions: [CGPoint] = [
             CGPoint(x: 40, y: 120),
             CGPoint(x: 90, y: 40),
@@ -204,35 +245,20 @@ extension BallonGraphView {
             CGPoint(x: 260, y: 120),
             CGPoint(x: 310, y: 40)
         ]
-        
         let connections: [[Int]] = [
-            [1],
-            [2],
-            [3],
-            [4],
-            [5],
-            []
+            [1], [2], [3], [4], [5], []
         ]
-        
-        let count = filteredBallons.count
-        var nodes: [BallonNode] = []
-        
+        let count = min(images.count, positions.count)
+        var nodes: [BallonNode2] = []
         for index in 0..<count {
-            let node = BallonNode(
+            nodes.append(BallonNode2(
                 id: index,
                 imageName: "ball\(index + 1)",
-                text: filteredBallons[index],
+                imageData: images[index],
                 position: positions[index],
                 connections: connections[index].filter { $0 < count }
-            )
-            nodes.append(node)
+            ))
         }
-        
         return nodes
     }
 }
-
-#Preview {
-    BallonMyBallonsView()
-}
-

@@ -1,21 +1,58 @@
 import SwiftUI
+import Combine
 
 struct BallonCard: Identifiable, Equatable {
     let id = UUID()
+    let inspireId: String
     let name: String
-    let ballons: [String] // ["ball1", ...]
+    let ballons: [String]
 }
 
 class BallonMyBallonsViewModel: ObservableObject {
-    @Published var cards: [BallonCard] = [
-        BallonCard(name: "Name name name", ballons: ["ball1", "ball2", "ball3", "ball4", "ball5", "ball6"]),
-        BallonCard(name: "Name name name", ballons: ["ball1", "ball2", "ball3", "ball4", "ball5", "ball6"]),
-        BallonCard(name: "Name name name", ballons: ["ball1", "ball2", "ball3", "ball4", "ball5", "ball6"])
-    ]
+    @Published var isDetail = false
+    @Published var cards: [BallonCard] = []
     
-    func delete(card: BallonCard) {
-        if let index = cards.firstIndex(of: card) {
-            cards.remove(at: index)
+    private var cancellables = Set<AnyCancellable>()
+    
+    func delete(card: BallonCard, login: String) {
+        NetworkManager.shared.deleteInspire(login: login, inspireId: card.inspireId) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    guard let self = self else { return }
+                    if let index = self.cards.firstIndex(where: { existingCard in
+                        existingCard.name == card.name &&
+                        existingCard.ballons.count == card.ballons.count
+                    }) {
+                        self.cards.remove(at: index)
+                    }
+                case .failure(let error):
+                    print("Ошибка удаления: \(error.localizedDescription)")
+                }
+            }
         }
     }
+    
+    func fetchCards(login: String) {
+        NetworkManager.shared.getInspire(login: login) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let inspire):
+                    let card = BallonCard(
+                        inspireId: inspire.id,
+                        name: inspire.name,
+                        ballons: inspire.trought
+                    )
+                    self?.cards = [card]
+                case .failure(let error):
+                    print("Ошибка загрузки: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
 }
+
+
+
+

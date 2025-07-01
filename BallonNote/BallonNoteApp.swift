@@ -4,7 +4,7 @@ import SwiftUI
 struct BallonNoteApp: App {
     var body: some Scene {
         WindowGroup {
-            BallonOnboardingView()
+            BallonTabBarView()
         }
     }
 }

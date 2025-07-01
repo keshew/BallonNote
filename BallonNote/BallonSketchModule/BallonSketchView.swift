@@ -11,7 +11,7 @@ struct BallonSketchView: View {
     @State var sketchImage: Data? = nil
     @State private var currentLine: Line = Line(points: [], color: .black, width: 2)
     
-    init() {
+    func unut() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
@@ -99,6 +99,35 @@ struct BallonSketchView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Sketch")
+            .navigationTitle("Choose ballons")  .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 35, height: 35)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.orange, lineWidth: 1)
+                                    .overlay {
+                                        VStack {
+                                            Image(.backButton)
+                                                .resizable()
+                                                .frame(width: 15, height: 15)
+                                                .offset(x: -1)
+                                            
+                                            Text("Back")
+                                                .Sand(size: 6)
+                                        }
+                                    }
+                            )
+                    }
+                }
+            }
+        }
+        .onAppear() {
+            unut()
         }
         .fullScreenCover(isPresented: $showChooseScreen) {
             BallonChooseSketchView(sketchImageData: sketchImage!)
@@ -242,7 +271,7 @@ struct BrushPicker: View {
             Image(brush.icon)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 48, height: 160)
+                .frame(width: 48, height: 260)
                 .foregroundColor(.black)
                 .shadow(color: Color(red: 232/255, green: 226/255, blue: 44/255), radius: selectedBrush == brush ? 8 : 0)
                 .offset(y: CGFloat(index) * 20)

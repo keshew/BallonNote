@@ -19,9 +19,14 @@
 		869820D42E0D34BA0002F028 /* BallonTabBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869820D02E0D34BA0002F028 /* BallonTabBarModel.swift */; };
 		869820D52E0D34BA0002F028 /* BallonTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869820D12E0D34BA0002F028 /* BallonTabBarView.swift */; };
 		869820D62E0D34BA0002F028 /* BallonTabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869820D22E0D34BA0002F028 /* BallonTabBarViewModel.swift */; };
+		86A65C8B2E13F548002EB797 /* BallonMySketchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A65C872E13F548002EB797 /* BallonMySketchModel.swift */; };
+		86A65C8C2E13F548002EB797 /* BallonMySketchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A65C882E13F548002EB797 /* BallonMySketchView.swift */; };
+		86A65C8D2E13F548002EB797 /* BallonMySketchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A65C892E13F548002EB797 /* BallonMySketchViewModel.swift */; };
+		86A65D872E140A84002EB797 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A65D852E140A84002EB797 /* UserDefaultsManager.swift */; };
 		86AD3E172E137211008F2E01 /* BallonDetailBallonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD3E132E137211008F2E01 /* BallonDetailBallonModel.swift */; };
 		86AD3E182E137211008F2E01 /* BallonDetailBallonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD3E142E137211008F2E01 /* BallonDetailBallonView.swift */; };
 		86AD3E192E137211008F2E01 /* BallonDetailBallonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD3E152E137211008F2E01 /* BallonDetailBallonViewModel.swift */; };
+		86AD3E212E138071008F2E01 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD3E1E2E138071008F2E01 /* NetworkManager.swift */; };
 		86C322E02E0BF4030074D398 /* BallonTextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C322D12E0BF4030074D398 /* BallonTextExtension.swift */; };
 		86C322E12E0BF4030074D398 /* BallonNoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C322DC2E0BF4030074D398 /* BallonNoteApp.swift */; };
 		86C322E32E0BF4030074D398 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86C322D52E0BF4030074D398 /* Quicksand-Bold.ttf */; };
@@ -62,9 +67,14 @@
 		869820D02E0D34BA0002F028 /* BallonTabBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonTabBarModel.swift; sourceTree = "<group>"; };
 		869820D12E0D34BA0002F028 /* BallonTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonTabBarView.swift; sourceTree = "<group>"; };
 		869820D22E0D34BA0002F028 /* BallonTabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonTabBarViewModel.swift; sourceTree = "<group>"; };
+		86A65C872E13F548002EB797 /* BallonMySketchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonMySketchModel.swift; sourceTree = "<group>"; };
+		86A65C882E13F548002EB797 /* BallonMySketchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonMySketchView.swift; sourceTree = "<group>"; };
+		86A65C892E13F548002EB797 /* BallonMySketchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonMySketchViewModel.swift; sourceTree = "<group>"; };
+		86A65D852E140A84002EB797 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		86AD3E132E137211008F2E01 /* BallonDetailBallonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonDetailBallonModel.swift; sourceTree = "<group>"; };
 		86AD3E142E137211008F2E01 /* BallonDetailBallonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonDetailBallonView.swift; sourceTree = "<group>"; };
 		86AD3E152E137211008F2E01 /* BallonDetailBallonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonDetailBallonViewModel.swift; sourceTree = "<group>"; };
+		86AD3E1E2E138071008F2E01 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		86C322B32E0BF27A0074D398 /* BallonNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BallonNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C322D12E0BF4030074D398 /* BallonTextExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonTextExtension.swift; sourceTree = "<group>"; };
 		86C322D52E0BF4030074D398 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.ttf"; sourceTree = "<group>"; };
@@ -145,6 +155,24 @@
 			path = BallonTabBarModule;
 			sourceTree = "<group>";
 		};
+		86A65C8A2E13F548002EB797 /* BallonMySketchModule */ = {
+			isa = PBXGroup;
+			children = (
+				86A65C872E13F548002EB797 /* BallonMySketchModel.swift */,
+				86A65C882E13F548002EB797 /* BallonMySketchView.swift */,
+				86A65C892E13F548002EB797 /* BallonMySketchViewModel.swift */,
+			);
+			path = BallonMySketchModule;
+			sourceTree = "<group>";
+		};
+		86A65D862E140A84002EB797 /* UserDefaultsManager */ = {
+			isa = PBXGroup;
+			children = (
+				86A65D852E140A84002EB797 /* UserDefaultsManager.swift */,
+			);
+			path = UserDefaultsManager;
+			sourceTree = "<group>";
+		};
 		86AD3E162E137211008F2E01 /* BallonDetailBallonModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +181,23 @@
 				86AD3E152E137211008F2E01 /* BallonDetailBallonViewModel.swift */,
 			);
 			path = BallonDetailBallonModule;
+			sourceTree = "<group>";
+		};
+		86AD3E1F2E138071008F2E01 /* NetworkManager */ = {
+			isa = PBXGroup;
+			children = (
+				86AD3E1E2E138071008F2E01 /* NetworkManager.swift */,
+			);
+			path = NetworkManager;
+			sourceTree = "<group>";
+		};
+		86AD3E202E138071008F2E01 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				86A65D862E140A84002EB797 /* UserDefaultsManager */,
+				86AD3E1F2E138071008F2E01 /* NetworkManager */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		86C322AA2E0BF27A0074D398 = {
@@ -224,6 +269,7 @@
 		86C322DF2E0BF4030074D398 /* BallonNote */ = {
 			isa = PBXGroup;
 			children = (
+				86A65C8A2E13F548002EB797 /* BallonMySketchModule */,
 				86AD3E162E137211008F2E01 /* BallonDetailBallonModule */,
 				86E9FF272E13402700DD87B6 /* BallonMyBallonsModule */,
 				86D42D732E12F116001F8A4A /* BallonChooseSketchModule */,
@@ -238,6 +284,7 @@
 				86C322D32E0BF4030074D398 /* BallonExtensions */,
 				86C322D82E0BF4030074D398 /* BallonHelpers */,
 				86C322DA2E0BF4030074D398 /* Preview Content */,
+				86AD3E202E138071008F2E01 /* Managers */,
 				86C322DC2E0BF4030074D398 /* BallonNoteApp.swift */,
 				86C322DB2E0BF4030074D398 /* Assets.xcassets */,
 				86C322DE2E0BF4030074D398 /* Info.plist */,
@@ -387,11 +434,15 @@
 				86C322E12E0BF4030074D398 /* BallonNoteApp.swift in Sources */,
 				868FB4342E0CA3D70008AD02 /* BallonProfileModel.swift in Sources */,
 				868FB4352E0CA3D70008AD02 /* BallonProfileView.swift in Sources */,
+				86A65C8B2E13F548002EB797 /* BallonMySketchModel.swift in Sources */,
+				86A65C8C2E13F548002EB797 /* BallonMySketchView.swift in Sources */,
+				86A65C8D2E13F548002EB797 /* BallonMySketchViewModel.swift in Sources */,
 				868FB4362E0CA3D70008AD02 /* BallonProfileViewModel.swift in Sources */,
 				868FB4262E0C9EF60008AD02 /* BallonSignModel.swift in Sources */,
 				868FB4272E0C9EF60008AD02 /* BallonSignView.swift in Sources */,
 				868FB4282E0C9EF60008AD02 /* BallonSignViewModel.swift in Sources */,
 				868FB3A32E0C99010008AD02 /* BallonLoginModel.swift in Sources */,
+				86A65D872E140A84002EB797 /* UserDefaultsManager.swift in Sources */,
 				868FB3A42E0C99010008AD02 /* BallonLoginView.swift in Sources */,
 				868FB3A52E0C99010008AD02 /* BallonLoginViewModel.swift in Sources */,
 				86D42C452E12A9AE001F8A4A /* BallonInspireModel.swift in Sources */,
@@ -409,6 +460,7 @@
 				86D42D4C2E12BD18001F8A4A /* BallonChooseModel.swift in Sources */,
 				86D42D4D2E12BD18001F8A4A /* BallonChooseView.swift in Sources */,
 				86D42D4E2E12BD18001F8A4A /* BallonChooseViewModel.swift in Sources */,
+				86AD3E212E138071008F2E01 /* NetworkManager.swift in Sources */,
 				86C322F52E0BF4280074D398 /* BallonOnboardingModel.swift in Sources */,
 				86C322F62E0BF4280074D398 /* BallonOnboardingView.swift in Sources */,
 				869820D42E0D34BA0002F028 /* BallonTabBarModel.swift in Sources */,
