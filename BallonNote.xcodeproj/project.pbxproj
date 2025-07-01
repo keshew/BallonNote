@@ -19,6 +19,9 @@
 		869820D42E0D34BA0002F028 /* BallonTabBarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869820D02E0D34BA0002F028 /* BallonTabBarModel.swift */; };
 		869820D52E0D34BA0002F028 /* BallonTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869820D12E0D34BA0002F028 /* BallonTabBarView.swift */; };
 		869820D62E0D34BA0002F028 /* BallonTabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869820D22E0D34BA0002F028 /* BallonTabBarViewModel.swift */; };
+		86AD3E172E137211008F2E01 /* BallonDetailBallonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD3E132E137211008F2E01 /* BallonDetailBallonModel.swift */; };
+		86AD3E182E137211008F2E01 /* BallonDetailBallonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD3E142E137211008F2E01 /* BallonDetailBallonView.swift */; };
+		86AD3E192E137211008F2E01 /* BallonDetailBallonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD3E152E137211008F2E01 /* BallonDetailBallonViewModel.swift */; };
 		86C322E02E0BF4030074D398 /* BallonTextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C322D12E0BF4030074D398 /* BallonTextExtension.swift */; };
 		86C322E12E0BF4030074D398 /* BallonNoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C322DC2E0BF4030074D398 /* BallonNoteApp.swift */; };
 		86C322E32E0BF4030074D398 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86C322D52E0BF4030074D398 /* Quicksand-Bold.ttf */; };
@@ -41,6 +44,9 @@
 		86D42D742E12F116001F8A4A /* BallonChooseSketchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D42D702E12F116001F8A4A /* BallonChooseSketchModel.swift */; };
 		86D42D752E12F116001F8A4A /* BallonChooseSketchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D42D712E12F116001F8A4A /* BallonChooseSketchView.swift */; };
 		86D42D762E12F116001F8A4A /* BallonChooseSketchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D42D722E12F116001F8A4A /* BallonChooseSketchViewModel.swift */; };
+		86E9FF282E13402700DD87B6 /* BallonMyBallonsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E9FF242E13402700DD87B6 /* BallonMyBallonsModel.swift */; };
+		86E9FF292E13402700DD87B6 /* BallonMyBallonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E9FF252E13402700DD87B6 /* BallonMyBallonsView.swift */; };
+		86E9FF2A2E13402700DD87B6 /* BallonMyBallonsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E9FF262E13402700DD87B6 /* BallonMyBallonsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +62,9 @@
 		869820D02E0D34BA0002F028 /* BallonTabBarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonTabBarModel.swift; sourceTree = "<group>"; };
 		869820D12E0D34BA0002F028 /* BallonTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonTabBarView.swift; sourceTree = "<group>"; };
 		869820D22E0D34BA0002F028 /* BallonTabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonTabBarViewModel.swift; sourceTree = "<group>"; };
+		86AD3E132E137211008F2E01 /* BallonDetailBallonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonDetailBallonModel.swift; sourceTree = "<group>"; };
+		86AD3E142E137211008F2E01 /* BallonDetailBallonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonDetailBallonView.swift; sourceTree = "<group>"; };
+		86AD3E152E137211008F2E01 /* BallonDetailBallonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonDetailBallonViewModel.swift; sourceTree = "<group>"; };
 		86C322B32E0BF27A0074D398 /* BallonNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BallonNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C322D12E0BF4030074D398 /* BallonTextExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonTextExtension.swift; sourceTree = "<group>"; };
 		86C322D52E0BF4030074D398 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.ttf"; sourceTree = "<group>"; };
@@ -80,6 +89,9 @@
 		86D42D702E12F116001F8A4A /* BallonChooseSketchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonChooseSketchModel.swift; sourceTree = "<group>"; };
 		86D42D712E12F116001F8A4A /* BallonChooseSketchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonChooseSketchView.swift; sourceTree = "<group>"; };
 		86D42D722E12F116001F8A4A /* BallonChooseSketchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonChooseSketchViewModel.swift; sourceTree = "<group>"; };
+		86E9FF242E13402700DD87B6 /* BallonMyBallonsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonMyBallonsModel.swift; sourceTree = "<group>"; };
+		86E9FF252E13402700DD87B6 /* BallonMyBallonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonMyBallonsView.swift; sourceTree = "<group>"; };
+		86E9FF262E13402700DD87B6 /* BallonMyBallonsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallonMyBallonsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +143,16 @@
 				869820D22E0D34BA0002F028 /* BallonTabBarViewModel.swift */,
 			);
 			path = BallonTabBarModule;
+			sourceTree = "<group>";
+		};
+		86AD3E162E137211008F2E01 /* BallonDetailBallonModule */ = {
+			isa = PBXGroup;
+			children = (
+				86AD3E132E137211008F2E01 /* BallonDetailBallonModel.swift */,
+				86AD3E142E137211008F2E01 /* BallonDetailBallonView.swift */,
+				86AD3E152E137211008F2E01 /* BallonDetailBallonViewModel.swift */,
+			);
+			path = BallonDetailBallonModule;
 			sourceTree = "<group>";
 		};
 		86C322AA2E0BF27A0074D398 = {
@@ -202,6 +224,8 @@
 		86C322DF2E0BF4030074D398 /* BallonNote */ = {
 			isa = PBXGroup;
 			children = (
+				86AD3E162E137211008F2E01 /* BallonDetailBallonModule */,
+				86E9FF272E13402700DD87B6 /* BallonMyBallonsModule */,
 				86D42D732E12F116001F8A4A /* BallonChooseSketchModule */,
 				86D42D5F2E12E9E6001F8A4A /* BallonSketchModule */,
 				86D42D4B2E12BD18001F8A4A /* BallonChooseModule */,
@@ -269,6 +293,16 @@
 				86D42D722E12F116001F8A4A /* BallonChooseSketchViewModel.swift */,
 			);
 			path = BallonChooseSketchModule;
+			sourceTree = "<group>";
+		};
+		86E9FF272E13402700DD87B6 /* BallonMyBallonsModule */ = {
+			isa = PBXGroup;
+			children = (
+				86E9FF242E13402700DD87B6 /* BallonMyBallonsModel.swift */,
+				86E9FF252E13402700DD87B6 /* BallonMyBallonsView.swift */,
+				86E9FF262E13402700DD87B6 /* BallonMyBallonsViewModel.swift */,
+			);
+			path = BallonMyBallonsModule;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -346,6 +380,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86AD3E172E137211008F2E01 /* BallonDetailBallonModel.swift in Sources */,
+				86AD3E182E137211008F2E01 /* BallonDetailBallonView.swift in Sources */,
+				86AD3E192E137211008F2E01 /* BallonDetailBallonViewModel.swift in Sources */,
 				86C322E02E0BF4030074D398 /* BallonTextExtension.swift in Sources */,
 				86C322E12E0BF4030074D398 /* BallonNoteApp.swift in Sources */,
 				868FB4342E0CA3D70008AD02 /* BallonProfileModel.swift in Sources */,
@@ -366,6 +403,9 @@
 				86D42D602E12E9E6001F8A4A /* BallonSketchModel.swift in Sources */,
 				86D42D612E12E9E6001F8A4A /* BallonSketchView.swift in Sources */,
 				86D42D622E12E9E6001F8A4A /* BallonSketchViewModel.swift in Sources */,
+				86E9FF282E13402700DD87B6 /* BallonMyBallonsModel.swift in Sources */,
+				86E9FF292E13402700DD87B6 /* BallonMyBallonsView.swift in Sources */,
+				86E9FF2A2E13402700DD87B6 /* BallonMyBallonsViewModel.swift in Sources */,
 				86D42D4C2E12BD18001F8A4A /* BallonChooseModel.swift in Sources */,
 				86D42D4D2E12BD18001F8A4A /* BallonChooseView.swift in Sources */,
 				86D42D4E2E12BD18001F8A4A /* BallonChooseViewModel.swift in Sources */,

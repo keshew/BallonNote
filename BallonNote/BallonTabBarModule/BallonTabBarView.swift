@@ -10,6 +10,7 @@ struct BallonTabBarView: View {
                 if selectedTab == .Inspire {
                     BallonInspireView()
                 } else if selectedTab == .Ballons {
+                    BallonMyBallonsView()
                 } else if selectedTab == .Sketch {
                     BallonSketchView()
                 } else if selectedTab == .Profile {
@@ -52,7 +53,7 @@ struct CustomTabBar: View {
                     .offset(y: 35)
             }
             
-            HStack(spacing: -70) {
+            HStack(spacing: 30) {
                 TabBarItem(imageName: "tab1", tab: .Inspire, selectedTab: $selectedTab)
                 TabBarItem(imageName: "tab2", tab: .Ballons, selectedTab: $selectedTab)
                 TabBarItem(imageName: "tab3", tab: .Sketch, selectedTab: $selectedTab)
@@ -71,7 +72,9 @@ struct TabBarItem: View {
     
     var body: some View {
         Button(action: {
-            selectedTab = tab
+            withAnimation {
+                selectedTab = tab
+            }
         }) {
             VStack(spacing: 12) {
                 Rectangle()
@@ -90,15 +93,13 @@ struct TabBarItem: View {
                             
                             Text("\(tab)")
                                 .Sand(
-                                    size: 7,
+                                    size: 9,
                                     color: selectedTab == tab
-                                    ? Color(red: 235/255, green: 142/255, blue: 253/255)
-                                    : Color(red: 177/255, green: 160/255, blue: 177/255)
-                                )
+                                    ? .black : .black.opacity(0.4))
                         }
                     }
             }
-            .frame(maxWidth: .infinity)
+//            .frame(maxWidth: .infinity)
         }
     }
 }

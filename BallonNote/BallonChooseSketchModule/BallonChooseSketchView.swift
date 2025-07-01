@@ -10,34 +10,35 @@ struct BallonChooseSketchView: View {
     
     @State var thoughts = ["1", "2", "3", "4", "5", "6"]
     @State var chosenThoughts = Array(repeating: "", count: 6)
+    @State var selectedBallonIndices: Set<Int> = []
     
-//    init(sketchImageData: Data) {
-//        self.sketchImageData = sketchImageData
-//        print(sketchImageData)
-//        let appearance = UINavigationBarAppearance()
-//        appearance.configureWithOpaqueBackground()
-//        appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
-//        appearance.shadowColor = .clear
-//        
-//        if let customFont = UIFont(name: "Quicksand-Bold", size: 20) {
-//            appearance.titleTextAttributes = [
-//                .foregroundColor: UIColor.black,
-//                .font: customFont
-//            ]
-//            appearance.largeTitleTextAttributes = [
-//                .foregroundColor: UIColor.black,
-//                .font: customFont.withSize(34)
-//            ]
-//        } else {
-//            appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-//            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-//        }
-//        
-//        UINavigationBar.appearance().standardAppearance = appearance
-//        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-//        UINavigationBar.appearance().compactAppearance = appearance
-//        UINavigationBar.appearance().tintColor = .white
-//    }
+    init(sketchImageData: Data) {
+        self.sketchImageData = sketchImageData
+        print(sketchImageData)
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(red: 233/255, green: 225/255, blue: 46/255, alpha: 1)
+        appearance.shadowColor = .clear
+        
+        if let customFont = UIFont(name: "Quicksand-Bold", size: 20) {
+            appearance.titleTextAttributes = [
+                .foregroundColor: UIColor.black,
+                .font: customFont
+            ]
+            appearance.largeTitleTextAttributes = [
+                .foregroundColor: UIColor.black,
+                .font: customFont.withSize(34)
+            ]
+        } else {
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
+        }
+        
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().tintColor = .white
+    }
     
     var body: some View {
         NavigationView {
@@ -80,10 +81,15 @@ struct BallonChooseSketchView: View {
                                                         .overlay(
                                                             RoundedRectangle(cornerRadius: 16)
                                                                 .stroke(.gray.opacity(0.3))
-                                                                .overlay(
-                                                                    Text(chosenThoughts[index])
-                                                                        .Sand(size: 10)
-                                                                )
+                                                                .overlay {
+                                                                    if selectedBallonIndices.contains(index), let data = sketchImageData, let image = UIImage(data: data) {
+                                                                        Image(uiImage: image)
+                                                                            .resizable()
+                                                                            .frame(width: 50, height: 50)
+                                                                            .cornerRadius(12)
+                                                                            .padding(.horizontal, 35)
+                                                                    }
+                                                                }
                                                         )
                                                         .frame(height: 45)
                                                         .cornerRadius(16)
@@ -93,6 +99,13 @@ struct BallonChooseSketchView: View {
                                     )
                                     .frame(width: 126, height: 126)
                                     .cornerRadius(24)
+                                    .onTapGesture {
+                                        if selectedBallonIndices.contains(index) {
+                                            selectedBallonIndices.remove(index)
+                                        } else {
+                                            selectedBallonIndices.insert(index)
+                                        }
+                                    }
                             }
                         }
                         .padding(.top)
@@ -116,6 +129,9 @@ struct BallonChooseSketchView: View {
                                                     .frame( height: 192)
                                                     .cornerRadius(12)
                                                     .padding(.horizontal, 35)
+                                                    .onTapGesture {
+                                                        moveImageToNextBallon()
+                                                    }
                                             }
                                         }
                                 )
@@ -131,7 +147,7 @@ struct BallonChooseSketchView: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color(red: 248/255, green: 167/255, blue: 54/255), lineWidth: 2)
                                         .overlay(
-                                            Text("Create \(sketchImageData)")
+                                            Text("Create")
                                                 .SandBold(size: 14)
                                         )
                                 )
@@ -181,6 +197,11 @@ struct BallonChooseSketchView: View {
                 thoughts.remove(at: removeIdx)
             }
         }
+    }
+    
+    func moveImageToNextBallon() {
+        let nextIndex = selectedBallonIndices.count % 6
+        selectedBallonIndices.insert(nextIndex)
     }
 }
 

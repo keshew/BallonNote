@@ -7,10 +7,6 @@ struct BallonSketchView: View {
                         GridItem(.flexible(), spacing: -20),
                         GridItem(.flexible(), spacing: -20)]
     
-    
-    @State var thoughts = ["1", "2", "3", "4", "5", "6"]
-    @State var chosenThoughts = Array(repeating: "", count: 6)
-    
     @State private var showChooseScreen = false
     @State var sketchImage: Data? = nil
     @State private var currentLine: Line = Line(points: [], color: .black, width: 2)
@@ -72,13 +68,10 @@ struct BallonSketchView: View {
                                     getCurrentColor: { ballonSketchModel.selectedColor.color },
                                     getCurrentWidth: { ballonSketchModel.selectedBrush.width }
                                 ).asImage(size: size)
-                                print("snapshot image size: \(image.size)")
+                                
                                 if let data = image.pngData(), data.count > 0 {
-                                    print("PNG data size: \(data.count)")
                                     sketchImage = data
-                                    print("sketchImage set, showChooseScreen = true")
                                     showChooseScreen = true
-                                    print("Передаём в BallonChooseSketchView: sketchImage = \(sketchImage?.count ?? 0)")
                                     ballonSketchModel.agaon = 0
                                 } else {
                                     print("snapshot error")
@@ -119,7 +112,6 @@ struct BallonSketchView: View {
         }
     }
     
-    // Вынесенная палитра цветов с callback
     private var colorPalette: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 24) {
