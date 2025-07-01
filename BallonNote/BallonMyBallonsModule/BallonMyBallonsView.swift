@@ -20,8 +20,7 @@ struct BallonMyBallonsView: View {
                         Text("Ballons")
                             .SandBold(size: 20)
                     }
-                    .padding(.top, 0)
-                    
+                    .padding(.top, 5)
                     .padding(.horizontal)
                     
                     ForEach(ballonMyBallonsModel.cards) { card in
@@ -33,6 +32,7 @@ struct BallonMyBallonsView: View {
 //                            ballonMyBallonsModel.isDetail = true
                         }
                     }
+                    .padding(.top)
                     
                     Color.clear.frame(height: 80)
                 }

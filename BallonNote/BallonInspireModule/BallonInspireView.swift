@@ -112,7 +112,7 @@ struct BallonInspireView: View {
                     Color.clear.frame(height: 80)
                 }
             }
-            .padding(.top, 5)
+            .padding(.top, 15)
         }
         .disabled(UserDefaultsManager().isGuest() ? true : false)
         .opacity(UserDefaultsManager().isGuest() ? 0.5 : 1)

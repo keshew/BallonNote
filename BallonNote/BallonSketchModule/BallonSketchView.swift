@@ -51,7 +51,7 @@ struct BallonSketchView: View {
                         
                         Text("Sketch")
                             .SandBold(size: 20)
-                            .padding(.trailing, 30)
+                            .padding(.trailing, 35)
                         
                         Spacer()
                     }
@@ -104,7 +104,7 @@ struct BallonSketchView: View {
                                 .padding(.horizontal, 20)
                         }
                     }
-                    .padding(.top, 8)
+                    .padding(.top, 15)
                     .padding(.leading)
                 }
             }

@@ -4,7 +4,7 @@ final class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
     
-    private let baseURL = URL(string: "http://ge716a.twcloack.online/app.php")!
+    private let baseURL = URL(string: "https://ballonnote.shop/app.php")!
     
     enum NetworkError: Error {
         case invalidURL

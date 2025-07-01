@@ -32,7 +32,7 @@ struct BallonProfileView: View {
                         Text("Profile")
                             .SandBold(size: 20)
                     }
-                    .padding(.top, 5)
+                    .padding(.top, 20)
                     
                     Rectangle()
                         .fill(Color(red: 247/255, green: 245/255, blue: 233/255))

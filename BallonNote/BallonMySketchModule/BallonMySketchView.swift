@@ -18,9 +18,10 @@ struct BallonMySketchView: View {
                 VStack {
                     HStack {
                         Spacer()
-                        Text("Ballons")
+                        Text("Sketch")
                             .SandBold(size: 20)
-                            .padding(.leading, 35)
+                            .padding(.leading, 50)
+                            .padding(.top, 5)
                         
                         Spacer()
                         Button(action: {
@@ -58,10 +59,11 @@ struct BallonMySketchView: View {
 //                                ballonMySketchModel.isDetail = true
                         })
                     }
+                    .padding(.top)
                     
                     Color.clear.frame(height: 80)
                 }
-                .padding(.top)
+                .padding(.top, 23)
             }
         }
         
