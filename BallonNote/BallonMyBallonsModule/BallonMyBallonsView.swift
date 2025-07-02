@@ -43,7 +43,7 @@ struct BallonMyBallonsView: View {
 //            BallonDetailBallonView()
 //        }
         .onAppear {
-              ballonMyBallonsModel.fetchCards(login: UserDefaultsManager().getEmail() ?? "йцуйцу")
+            ballonMyBallonsModel.fetchCards(login: UserDefaultsManager().getEmail() ?? "йцуйцу")
           }
     }
 }
